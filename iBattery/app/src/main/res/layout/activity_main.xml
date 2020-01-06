@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:backgroundTint="#000000"
+    android:background="@color/colorSecondary"
+    android:backgroundTint="@color/colorSecondary"
     tools:context=".MainActivity">
 
     <Switch
         android:id="@+id/switch1"
-        android:layout_width="115dp"
-        android:layout_height="50dp"
+        android:layout_width="57.5dp"
+        android:layout_height="25dp"
         android:layout_marginStart="176dp"
         android:layout_marginTop="352dp"
         android:showText="false"
