@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorIceWhite">#D3D3D3</color>
 
     <color name="color1">#B30000</color>
     <color name="color2">#FF1919</color>
@@ -19,5 +20,5 @@
     <color name="colorDark5">#33FF6D</color>
 
     <color name="colorVermelhoSwitch">#D81B60</color>
-    <color name="colorVerdeSwitch">#D81B60</color>
+    <color name="colorVerdeSwitch">#549B58</color>
 </resources>
