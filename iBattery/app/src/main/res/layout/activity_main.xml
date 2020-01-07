@@ -8,12 +8,36 @@
     android:backgroundTint="@color/colorSecondary"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="524dp"
+        android:fontFamily="Abel"
+        android:text="Alarme"
+        android:textColor="@color/colorIceWhite"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/battery"
+        android:layout_width="0dp"
+        android:layout_height="337dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="140dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@drawable/ic_battery" />
+
     <Switch
-        android:id="@+id/switch1"
-        android:layout_width="57.5dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="352dp"
+        android:id="@+id/alarme"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="580dp"
         android:showText="false"
         android:thumb="@drawable/selector_thumb"
         android:track="@drawable/ic_switch_bg"
