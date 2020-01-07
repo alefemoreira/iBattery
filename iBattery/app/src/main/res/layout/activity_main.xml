@@ -9,39 +9,136 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/batteryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="524dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="80dp"
         android:fontFamily="Abel"
-        android:text="Alarme"
+        android:gravity="center_horizontal"
+        android:text="@string/bateria"
+        android:textAlignment="center"
+        android:textColor="@color/colorIceWhite"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Connected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="216dp"
+        android:layout_marginTop="514dp"
+        android:fontFamily="Abel"
+        android:text="@string/conectado"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorIceWhite"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/toAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="508dp"
+        android:fontFamily="Abel"
+        android:gravity="center_horizontal"
+        android:text="@string/alarme"
+        android:textAlignment="center"
         android:textColor="@color/colorIceWhite"
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/battery"
-        android:layout_width="0dp"
-        android:layout_height="337dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="140dp"
+        android:id="@+id/batteryMold"
+        android:layout_width="206dp"
+        android:layout_height="356dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="152dp"
+        android:contentDescription="@string/battery_mold_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/ic_battery" />
+
+    <Button
+        android:id="@+id/fillBattery"
+        android:layout_width="204dp"
+        android:layout_height="332dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="220dp"
+        android:backgroundTint="@color/colorDark5"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/bgConnected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="259dp"
+        android:layout_marginTop="580dp"
+        android:contentDescription="@string/bg_connected_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_bgconnected" />
 
     <Switch
         android:id="@+id/alarme"
-        android:layout_width="115dp"
+        android:layout_width="101dp"
         android:layout_height="50dp"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="580dp"
+        android:checked="false"
         android:showText="false"
         android:thumb="@drawable/selector_thumb"
         android:track="@drawable/ic_switch_bg"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:checked="true" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="206dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="537dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">iBattery</string>
+    <string name="alarme">Alarme</string>
+    <string name="conectado">Conectado?</string>
+    <string name="battery_mold_desc">mold for battery fill</string>
+    <string name="bg_connected_desc">background for connected information</string>
+    <string name="bateria">Bateria</string>
+    <string name="battery_fill">battery fill</string>
 </resources>
