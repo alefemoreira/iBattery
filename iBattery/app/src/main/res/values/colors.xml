@@ -20,6 +20,6 @@
     <color name="colorDark4">#00B333</color>
     <color name="colorDark5">#33FF6D</color>
 
-    <color name="colorVermelhoSwitch">#d81b60</color>
+    <color name="colorVermelhoSwitch">#d81b60</color>#
     <color name="colorVerdeSwitch">#549B58</color>
 </resources>

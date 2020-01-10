@@ -5,5 +5,8 @@
     <string name="battery_mold_desc">mold for battery fill</string>
     <string name="bg_connected_desc">background for connected information</string>
     <string name="bateria">Bateria</string>
-    <string name="battery_fill">battery fill</string>
+<!--    <string name="battery_fill">battery fill</string>-->
+    <string name="battery_fill_desc">Indicate the battery percentage</string>
+    <string name="teste_initial">False</string>
+    <string name="percentage_initial">100%</string>
 </resources>
