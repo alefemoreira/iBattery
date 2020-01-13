@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public ImageView connectedBackground, moldBattery, batteryFill;
     public TextView test, percentage, batteryText, toAlarm, conneted;
     public boolean isAlarme = true;
+
     Locale locale = Locale.getDefault();
 
     @Override
@@ -63,21 +64,32 @@ public class MainActivity extends AppCompatActivity {
     public String toStantardPercentage(float percentage) {
         float percentalized = percentalize(percentage);
         int noPoint = toRemovePoint(percentalized);
-        return String.format(this.locale,"%d %%", noPoint);
+        return String.format(this.locale,"%d%%", noPoint);
     }
 
     public void setIsAlarme(View view){
         this.isAlarme = this.alarme.isChecked();
-        if (isAlarme) {
+
+        float batteryPercentage = getBatteryLevel();
+        String percentageStardalized = toStantardPercentage(batteryPercentage);
+        this.percentage.setText(percentageStardalized);
+    }
+
+    public void isCharging(View view){
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = registerReceiver(null, ifilter);
+
+        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                status == BatteryManager.BATTERY_STATUS_FULL; //Bateria cheia
+
+        if (isCharging){
             this.test.setText(R.string.teste_positive);
             this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedgreen);
         } else {
             this.test.setText(R.string.teste_negative);
             this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedred);
-
-            float batteryPercentage = getBatteryLevel();
-            String percentageStardalized = toStantardPercentage(batteryPercentage);
-            this.percentage.setText(percentageStardalized);
         }
+
     }
 }
