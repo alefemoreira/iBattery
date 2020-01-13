@@ -7,6 +7,7 @@
     <string name="bateria">Bateria</string>
 <!--    <string name="battery_fill">battery fill</string>-->
     <string name="battery_fill_desc">Indicate the battery percentage</string>
-    <string name="teste_initial">False</string>
+    <string name="teste_negative">No</string>
+    <string name="teste_positive">Yes</string>
     <string name="percentage_initial">100%</string>
 </resources>

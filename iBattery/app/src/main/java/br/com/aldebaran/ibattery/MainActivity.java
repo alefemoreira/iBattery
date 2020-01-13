@@ -44,10 +44,7 @@ public class MainActivity extends AppCompatActivity {
             int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
-            float batteryPct = level / (float) scale;
-
-
-            return batteryPct;
+            return level / (float) scale;
         } catch (Exception e){
             System.err.println("Erro ao pegar a % da bateria:" + e);
             return 0F;
@@ -56,14 +53,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void setIsAlarme(View view){
         this.isAlarme = this.alarme.isChecked();
-        if (isAlarme == false) {
-            this.test.setText("No");
+        if (isAlarme) {
+            this.test.setText(R.string.teste_positive);
+            this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedgreen);
+        } else {
+            this.test.setText(R.string.teste_negative);
             this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedred);
             float bPercentage = getBatteryLevel() * 100;
-            this.percentage.setText(Math.round(bPercentage) + "%");
-        } else {
-            this.test.setText("Yes");
-            this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedgreen);
+            Locale locale = Locale.getDefault();
+            this.percentage.setText(String.format(locale,"%d %%", Math.round(bPercentage)));
+
         }
     }
 }
