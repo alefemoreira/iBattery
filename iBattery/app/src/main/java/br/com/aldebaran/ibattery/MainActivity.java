@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public ImageView connectedBackground, moldBattery, batteryFill;
     public TextView test, percentage, batteryText, toAlarm, conneted;
     public boolean isAlarme = true;
+    Locale locale = Locale.getDefault();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public float percentalize(float percentage){
+        return percentage * 100;
+    }
+
+    private int toRemovePoint(float percentalized) {
+        return Math.round(percentalized);
+    }
+
+    public String toStantardPercentage(float percentage) {
+        float percentalized = percentalize(percentage);
+        int noPoint = toRemovePoint(percentalized);
+        return String.format(this.locale,"%d %%", noPoint);
+    }
+
     public void setIsAlarme(View view){
         this.isAlarme = this.alarme.isChecked();
         if (isAlarme) {
@@ -59,10 +74,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             this.test.setText(R.string.teste_negative);
             this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedred);
-            float bPercentage = getBatteryLevel() * 100;
-            Locale locale = Locale.getDefault();
-            this.percentage.setText(String.format(locale,"%d %%", Math.round(bPercentage)));
 
+            float batteryPercentage = getBatteryLevel();
+            String percentageStardalized = toStantardPercentage(batteryPercentage);
+            this.percentage.setText(percentageStardalized);
         }
     }
 }
