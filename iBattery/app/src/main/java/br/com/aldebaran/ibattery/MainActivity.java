@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         this.percentage = findViewById(R.id.percentage);
         alarme.setChecked(isAlarme);
 
+        setPercentageText();
+
     }
 
     public float getBatteryLevel(){
@@ -67,15 +69,19 @@ public class MainActivity extends AppCompatActivity {
         return String.format(this.locale,"%d%%", noPoint);
     }
 
-    public void setIsAlarme(View view){
-        this.isAlarme = this.alarme.isChecked();
-
+    public void setPercentageText(){
         float batteryPercentage = getBatteryLevel();
         String percentageStardalized = toStantardPercentage(batteryPercentage);
         this.percentage.setText(percentageStardalized);
     }
 
-    public void isCharging(View view){
+    public void setIsAlarme(View view){
+        this.isAlarme = this.alarme.isChecked();
+
+        setPercentageText();
+    }
+
+    public void isCharging(View view) {
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = registerReceiver(null, ifilter);
 
