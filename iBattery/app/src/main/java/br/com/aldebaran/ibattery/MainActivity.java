@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.IntentFilter;
-//import android.content.res.Resources;
 import android.os.BatteryManager;
 import android.os.Bundle;
-//import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -15,12 +13,13 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements OnEventChangedListener {
     public Switch alarme;
     public ImageView connectedBackground, moldBattery, batteryFill;
-    public TextView test, percentage, batteryText, toAlarm, conneted;
+    public TextView test, percentage, batteryText, toAlarm, connected;
     public boolean isAlarme = true;
+
+    private PowerConnectionReceiver pcr = new PowerConnectionReceiver();
 
     Locale locale = Locale.getDefault();
 
@@ -37,7 +36,38 @@ public class MainActivity extends AppCompatActivity {
         alarme.setChecked(isAlarme);
 
         setPercentageText();
+//        setConnectedText();
 
+        registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
+        registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PowerConnectionReceiver.setOnOnEventChangedListener(null);
+//        unregisterReceiver(pcr);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(pcr);
+        // É legal tirar a referência quando a Activity sair do topo do TaskStack.
+        PowerConnectionReceiver.setOnOnEventChangedListener(null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
+        // Recolocando quando ela vier a ser o topo do TaskStack.
+        PowerConnectionReceiver.setOnOnEventChangedListener(this);
+    }
+
+    @Override
+    public void onEventChanged() {
+        setConnectedText();
     }
 
     public float getBatteryLevel(){
@@ -81,7 +111,19 @@ public class MainActivity extends AppCompatActivity {
         setPercentageText();
     }
 
-    public void isCharging(View view) {
+    public void setIsConnected(View view){ setConnectedText(); }
+
+    public  void setConnectedText(){
+        if (isCharging()){
+            this.test.setText(R.string.teste_positive);
+            this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedgreen);
+        } else {
+            this.test.setText(R.string.teste_negative);
+            this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedred);
+        }
+    }
+
+    public boolean isCharging() {
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = registerReceiver(null, ifilter);
 
@@ -89,13 +131,6 @@ public class MainActivity extends AppCompatActivity {
         boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                 status == BatteryManager.BATTERY_STATUS_FULL; //Bateria cheia
 
-        if (isCharging){
-            this.test.setText(R.string.teste_positive);
-            this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedgreen);
-        } else {
-            this.test.setText(R.string.teste_negative);
-            this.connectedBackground.setBackgroundResource(R.drawable.ic_bgconnectedred);
-        }
-
+        return isCharging;
     }
 }
