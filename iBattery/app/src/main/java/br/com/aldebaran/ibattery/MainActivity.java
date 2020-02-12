@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
     public boolean isAlarme = true;
 
     private PowerConnectionReceiver pcr = new PowerConnectionReceiver();
+    private BatteryPercentage bp = new BatteryPercentage();
 
     Locale locale = Locale.getDefault();
 
@@ -36,17 +37,20 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
         alarme.setChecked(isAlarme);
 
         setPercentageText();
-//        setConnectedText();
+        setConnectedText();
 
         registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
+        registerReceiver(bp, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(pcr);
+
         PowerConnectionReceiver.setOnOnEventChangedListener(null);
-//        unregisterReceiver(pcr);
+        BatteryPercentage.setOnOnEventChangedListener(null);
     }
 
     @Override
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
         super.onPause();
         unregisterReceiver(pcr);
         // É legal tirar a referência quando a Activity sair do topo do TaskStack.
+        BatteryPercentage.setOnOnEventChangedListener(null);
         PowerConnectionReceiver.setOnOnEventChangedListener(null);
     }
 
@@ -63,12 +68,16 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
         registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         // Recolocando quando ela vier a ser o topo do TaskStack.
         PowerConnectionReceiver.setOnOnEventChangedListener(this);
+        BatteryPercentage.setOnOnEventChangedListener(this);
     }
 
     @Override
-    public void onEventChanged() {
+    public void onConnectionChanged() {
         setConnectedText();
     }
+
+    @Override
+    public void onPercentageChanged() { setPercentageText(); }
 
     public float getBatteryLevel(){
         try {
