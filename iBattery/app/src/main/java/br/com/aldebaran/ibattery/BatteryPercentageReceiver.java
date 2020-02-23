@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-public class BatteryPercentage extends BroadcastReceiver {
+public class BatteryPercentageReceiver extends BroadcastReceiver {
 
     static OnEventChangedListener mListener;
 

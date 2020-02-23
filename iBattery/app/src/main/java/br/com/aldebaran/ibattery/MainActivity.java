@@ -6,11 +6,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements OnEventChangedListener {
@@ -20,7 +28,8 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
     public boolean isAlarme = true;
 
     private PowerConnectionReceiver pcr = new PowerConnectionReceiver();
-    private BatteryPercentage bp = new BatteryPercentage();
+    private BatteryPercentageReceiver bp = new BatteryPercentageReceiver();
+    private File iBatteryJson;
 
     Locale locale = Locale.getDefault();
 
@@ -36,12 +45,32 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
         this.percentage = findViewById(R.id.percentage);
         alarme.setChecked(isAlarme);
 
+        iBatteryJson = new File(getExternalFilesDir(null), "iBattery.json");
+
         setPercentageText();
         setConnectedText();
 
         registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
         registerReceiver(bp, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
+        if (iBatteryJson.exists()) {
+            Log.i("Script", "File Exist");
+        } else {
+            Log.i("Script", "File Not Exist");
+            try {
+                Log.i("Script", "Creating " + iBatteryJson.getName());
+
+                iBatteryJson.createNewFile();
+
+                Log.i("Script", "The file \"" + iBatteryJson.getName() +
+                        "\" has been created with success");
+            } catch (IOException io){
+                io.printStackTrace();
+                Log.i("Script", "Fail on Creation of \"" + iBatteryJson.getName() + "\"");
+            }
+        }
+
     }
 
     @Override
@@ -50,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
         unregisterReceiver(pcr);
 
         PowerConnectionReceiver.setOnOnEventChangedListener(null);
-        BatteryPercentage.setOnOnEventChangedListener(null);
+        BatteryPercentageReceiver.setOnOnEventChangedListener(null);
     }
 
     @Override
@@ -58,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
         super.onPause();
         unregisterReceiver(pcr);
         // É legal tirar a referência quando a Activity sair do topo do TaskStack.
-        BatteryPercentage.setOnOnEventChangedListener(null);
+        BatteryPercentageReceiver.setOnOnEventChangedListener(null);
         PowerConnectionReceiver.setOnOnEventChangedListener(null);
     }
 
@@ -68,7 +97,10 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
         registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         // Recolocando quando ela vier a ser o topo do TaskStack.
         PowerConnectionReceiver.setOnOnEventChangedListener(this);
-        BatteryPercentage.setOnOnEventChangedListener(this);
+        BatteryPercentageReceiver.setOnOnEventChangedListener(this);
+
+        setPercentageText();
+        setConnectedText();
     }
 
     @Override
@@ -116,11 +148,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
 
     public void setIsAlarme(View view){
         this.isAlarme = this.alarme.isChecked();
-
-        setPercentageText();
     }
-
-    public void setIsConnected(View view){ setConnectedText(); }
 
     public  void setConnectedText(){
         if (isCharging()){
@@ -141,5 +169,33 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
                 status == BatteryManager.BATTERY_STATUS_FULL; //Bateria cheia
 
         return isCharging;
+    }
+
+    public void verifyAlarmState(){
+        try {
+            String str = "\"isAlarm\": true,";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(iBatteryJson));
+            writer.write(str);
+
+            Log.i("Script", "Written Did " + str);
+
+            writer.close();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+    }
+
+    public void writeAlarmState(){
+        try {
+            String str = "\"isAlarm\": true,";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(iBatteryJson));
+            writer.write(str);
+
+            Log.i("Script", "Written Did " + str);
+
+            writer.close();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 }
