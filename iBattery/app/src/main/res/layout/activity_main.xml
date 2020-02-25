@@ -123,7 +123,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="520dp"
-        android:checked="true"
+        android:checked="false"
         android:onClick="setIsAlarme"
         android:showText="false"
         android:thumb="@drawable/selector_thumb"

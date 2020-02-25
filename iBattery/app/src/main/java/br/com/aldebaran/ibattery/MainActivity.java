@@ -1,7 +1,5 @@
 package br.com.aldebaran.ibattery;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
@@ -12,14 +10,18 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.FileReader;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.BufferedWriter;
-import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Scanner;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity implements OnEventChangedListener {
     public Switch alarme;
@@ -47,29 +49,24 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
 
         iBatteryJson = new File(getExternalFilesDir(null), "iBattery.json");
 
-        setPercentageText();
-        setConnectedText();
 
         registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         registerReceiver(pcr, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
         registerReceiver(bp, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
-        if (iBatteryJson.exists()) {
-            Log.i("Script", "File Exist");
-        } else {
-            Log.i("Script", "File Not Exist");
+        if (!iBatteryJson.exists()) {
             try {
-                Log.i("Script", "Creating " + iBatteryJson.getName());
-
                 iBatteryJson.createNewFile();
-
-                Log.i("Script", "The file \"" + iBatteryJson.getName() +
-                        "\" has been created with success");
+                writeAlarmState(true);
             } catch (IOException io){
                 io.printStackTrace();
-                Log.i("Script", "Fail on Creation of \"" + iBatteryJson.getName() + "\"");
             }
         }
+
+        alarme.setChecked(verifyAlarmState());
+
+        setPercentageText();
+        setConnectedText();
 
     }
 
@@ -104,9 +101,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
     }
 
     @Override
-    public void onConnectionChanged() {
-        setConnectedText();
-    }
+    public void onConnectionChanged() { setConnectedText(); }
 
     @Override
     public void onPercentageChanged() { setPercentageText(); }
@@ -148,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
 
     public void setIsAlarme(View view){
         this.isAlarme = this.alarme.isChecked();
+        writeAlarmState(this.isAlarme);
     }
 
     public  void setConnectedText(){
@@ -171,31 +167,44 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
         return isCharging;
     }
 
-    public void verifyAlarmState(){
+    public boolean verifyAlarmState(){
+        JSONObject iBattery = readFileJSON(iBatteryJson);
         try {
-            String str = "\"isAlarm\": true,";
+            Log.i("Script", iBattery.get("isAlarm").toString());
+            return Boolean.parseBoolean(iBattery.get("isAlarm").toString());
+        } catch (JSONException json) {
+            json.printStackTrace();
+            return false;
+        }
+    }
+
+    public void writeAlarmState(boolean state){
+        try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(iBatteryJson));
-            writer.write(str);
-
-            Log.i("Script", "Written Did " + str);
-
+            writer.write("{\"isAlarm\":"+ state +"}");
             writer.close();
         } catch (IOException io) {
             io.printStackTrace();
         }
     }
 
-    public void writeAlarmState(){
+    public JSONObject readFileJSON(File file) {
+        String contentOfFile = "";
+
         try {
-            String str = "\"isAlarm\": true,";
-            BufferedWriter writer = new BufferedWriter(new FileWriter(iBatteryJson));
-            writer.write(str);
+            Scanner scanner = new Scanner(file);
 
-            Log.i("Script", "Written Did " + str);
+            while (scanner.hasNext()) contentOfFile += scanner.next();
 
-            writer.close();
         } catch (IOException io) {
             io.printStackTrace();
+        }
+
+        try {
+            return new JSONObject(contentOfFile);
+        } catch (JSONException json){
+            json.printStackTrace();
+            return new JSONObject();
         }
     }
 }
