@@ -1,8 +1,9 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-      android:width="100dp"
-      android:height="50dp"
-      android:viewportWidth="26.458332"
-      android:viewportHeight="13.229167">
+    android:id="@+id/bgConnectedRed"
+    android:width="100dp"
+    android:height="50dp"
+    android:viewportWidth="26.458332"
+    android:viewportHeight="13.229167">
   <path
       android:pathData="M1.3229,0L25.1354,0A1.3229,1.3229 0,0 1,26.4583 1.3229L26.4583,11.9063A1.3229,1.3229 0,0 1,25.1354 13.2292L1.3229,13.2292A1.3229,1.3229 0,0 1,-0 11.9063L-0,1.3229A1.3229,1.3229 0,0 1,1.3229 0z"
       android:strokeAlpha="1"
