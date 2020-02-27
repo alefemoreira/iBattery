@@ -10,4 +10,8 @@
     <string name="teste_negative">No</string>
     <string name="teste_positive">Yes</string>
     <string name="percentage_initial">100%</string>
+
+    <string name="channel_name">iBattery</string>
+    <string name="channel_description">iBattery Notification</string>
+    <string name="bateria_carregada">Bateria Carregada</string>
 </resources>
