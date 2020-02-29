@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
     public void onConnectionChanged() {
         setConnectedText();
 
-        if (getBatteryLevel() == 100 && isCharging()) {
+        if (getBatteryLevel() == 100 && isCharging() && verifyAlarmState()) {
             createNotification();
         }
     }
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
     public void onPercentageChanged() {
         setPercentageText();
 
-        if (getBatteryLevel() == 100 && isCharging()) {
+        if (getBatteryLevel() == 100 && isCharging() && verifyAlarmState()) {
             createNotification();
         }
     }
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
     public void createNotification(){
         createNotificationChannel();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, BATTERY_NOTIFICATION_ID)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.ic_ibattery_notification)
                 .setContentTitle("Bateria Carregada")
                 .setContentText("Sua bateria está completamente carregada")
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -248,5 +248,10 @@ public class MainActivity extends AppCompatActivity implements OnEventChangedLis
 
         // notificationId is a unique int for each notification that you must define
         notificationManagerCompat.notify(999, builder.build()); //999
+    }
+    public void createAlarmClock(int hora, int minutes, int second) {
+        /* TODO
+        * Trigger the alarm clock 1 minute after the battery is fully charged
+        */
     }
 }
